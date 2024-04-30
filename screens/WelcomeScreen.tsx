@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
+import RNAnimated from "react-native-animated-component";
 
 const WelcomeScreen = () => {
   const navigation = useNavigation<any>();
@@ -32,12 +33,14 @@ const WelcomeScreen = () => {
 
         <Text style={styles.text}>Magghub Assessment by Ihon Oseghale</Text>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("HomeScreen")}
-          style={styles.btn}
-        >
-          <Text style={styles.text}>Welcome</Text>
-        </TouchableOpacity>
+        <RNAnimated appearFrom="right" animationDuration={1500}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("HomeScreen")}
+            style={styles.btn}
+          >
+            <Text style={styles.text}>Welcome</Text>
+          </TouchableOpacity>
+        </RNAnimated>
       </ImageBackground>
     </View>
   );
