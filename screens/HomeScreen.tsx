@@ -7,44 +7,39 @@ import {
   SafeAreaView,
   Image,
   TextInput,
-} from "react-native";
-import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
+} from 'react-native';
+import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const HomeScreen = () => {
   const navigation = useNavigation<any>();
 
   const [formData, setFormData] = useState({
-    image: "",
-    name: "",
-    email: "",
-    age: "",
+    image: '',
+    name: '',
+    email: '',
+    age: '',
   });
   const [errors, setErrors] = useState({
-    imageError: "",
-    nameError: "",
-    emailError: "",
-    ageError: "",
+    imageError: '',
+    nameError: '',
+    emailError: '',
+    ageError: '',
   });
 
-  const { image, name, email, age } = formData;
-  const { imageError, nameError, emailError, ageError } = errors;
+  const {image, name, email, age} = formData;
+  const {imageError, nameError, emailError, ageError} = errors;
 
   const uploadPhoto = async () => {
-    setErrors({ ...errors, imageError: "" });
+    setErrors({...errors, imageError: ''});
 
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      aspect: [4, 3],
-      quality: 1,
+    launchImageLibrary({mediaType: 'photo'}, (response: any) => {
+      //   console.log(response);
+      if (response.didCancel) return;
+      const asset = response.assets[0];
+      setFormData({...formData, image: asset.uri});
     });
-
-    if (!result.canceled) {
-      const asset = result.assets[0];
-      setFormData({ ...formData, image: asset.uri });
-    }
   };
 
   const onSubmit = () => {
@@ -54,17 +49,17 @@ const HomeScreen = () => {
     const failImage = !image;
 
     setErrors({
-      emailError: failEmail ? "Email is not valid" : "",
-      nameError: failName ? "Full name is required" : "",
-      ageError: failAge ? "Age is not valid" : "",
-      imageError: failImage ? "Photo is required" : "",
+      emailError: failEmail ? 'Email is not valid' : '',
+      nameError: failName ? 'Full name is required' : '',
+      ageError: failAge ? 'Age is not valid' : '',
+      imageError: failImage ? 'Photo is required' : '',
     });
 
     if (failEmail || nameError || ageError || imageError) {
       return;
     }
 
-    navigation.navigate("DetailScreen", formData);
+    navigation.navigate('DetailScreen', formData);
   };
 
   const isEmail = (emailAdress: string) => {
@@ -76,19 +71,18 @@ const HomeScreen = () => {
     <ImageBackground
       style={styles.image}
       source={{
-        uri: "https://source.unsplash.com/random/?dark",
+        uri: 'https://source.unsplash.com/random/?dark',
       }}
-      resizeMode="cover"
-    >
-      <SafeAreaView style={{ flex: 1 }}>
+      resizeMode="cover">
+      <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
           <Image
             source={{
-              uri: "https://magghub.com/assets/images/MaggHub-Logo-Tall.png",
+              uri: 'https://magghub.com/assets/images/MaggHub-Logo-Tall.png',
             }}
             width={100}
             height={100}
-            style={[styles.avatar, { alignSelf: "center" }]}
+            style={[styles.avatar, {alignSelf: 'center'}]}
             resizeMode="contain"
           />
 
@@ -96,22 +90,21 @@ const HomeScreen = () => {
             {!nameError ? (
               <Text style={styles.text}>Full name</Text>
             ) : (
-              <Text style={[styles.text, { color: "red" }]}>{nameError}</Text>
+              <Text style={[styles.text, {color: 'red'}]}>{nameError}</Text>
             )}
             <View
               style={[
                 styles.inputContainer,
-                nameError ? { borderColor: "red" } : null,
-              ]}
-            >
-              <AntDesign name="user" size={22} color={"gray"} />
+                nameError ? {borderColor: 'red'} : null,
+              ]}>
+              {/* <AntDesign name="user" size={22} color={"gray"} /> */}
               <TextInput
                 placeholder="Enter full name"
-                style={{ marginLeft: 12 }}
+                style={{marginLeft: 12}}
                 value={name}
-                onChangeText={(text) => {
-                  setErrors({ ...errors, nameError: "" });
-                  setFormData({ ...formData, name: text });
+                onChangeText={text => {
+                  setErrors({...errors, nameError: ''});
+                  setFormData({...formData, name: text});
                 }}
               />
             </View>
@@ -121,22 +114,21 @@ const HomeScreen = () => {
             {!emailError ? (
               <Text style={styles.text}>Email</Text>
             ) : (
-              <Text style={[styles.text, { color: "red" }]}>{emailError}</Text>
+              <Text style={[styles.text, {color: 'red'}]}>{emailError}</Text>
             )}
             <View
               style={[
                 styles.inputContainer,
-                emailError ? { borderColor: "red" } : null,
-              ]}
-            >
-              <MaterialIcons name="alternate-email" size={22} color={"gray"} />
+                emailError ? {borderColor: 'red'} : null,
+              ]}>
+              {/* <MaterialIcons name="alternate-email" size={22} color={"gray"} /> */}
               <TextInput
                 placeholder="Enter Email"
-                style={{ marginLeft: 12 }}
+                style={{marginLeft: 12}}
                 value={email}
-                onChangeText={(text) => {
-                  setErrors({ ...errors, emailError: "" });
-                  setFormData({ ...formData, email: text });
+                onChangeText={text => {
+                  setErrors({...errors, emailError: ''});
+                  setFormData({...formData, email: text});
                 }}
               />
             </View>
@@ -146,22 +138,21 @@ const HomeScreen = () => {
             {!ageError ? (
               <Text style={styles.text}>Age</Text>
             ) : (
-              <Text style={[styles.text, { color: "red" }]}>{ageError}</Text>
+              <Text style={[styles.text, {color: 'red'}]}>{ageError}</Text>
             )}
             <View
               style={[
                 styles.inputContainer,
-                ageError ? { borderColor: "red" } : null,
-              ]}
-            >
-              <AntDesign name="addusergroup" size={22} color={"gray"} />
+                ageError ? {borderColor: 'red'} : null,
+              ]}>
+              {/* <AntDesign name="addusergroup" size={22} color={"gray"} /> */}
               <TextInput
                 placeholder="Enter your age"
-                style={{ marginLeft: 12 }}
+                style={{marginLeft: 12}}
                 value={age}
-                onChangeText={(text) => {
-                  setErrors({ ...errors, ageError: "" });
-                  setFormData({ ...formData, age: text });
+                onChangeText={text => {
+                  setErrors({...errors, ageError: ''});
+                  setFormData({...formData, age: text});
                 }}
                 keyboardType="numeric"
               />
@@ -171,18 +162,17 @@ const HomeScreen = () => {
           {!imageError ? (
             <Text style={styles.text}>Upload Photo</Text>
           ) : (
-            <Text style={[styles.text, { color: "red" }]}>{imageError}</Text>
+            <Text style={[styles.text, {color: 'red'}]}>{imageError}</Text>
           )}
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={uploadPhoto}
-            style={styles.avatarContainer}
-          >
+            style={styles.avatarContainer}>
             <Image
               source={{
                 uri: image
                   ? image
-                  : "https://png.pngtree.com/png-clipart/20200224/original/pngtree-avatar-icon-profile-icon-member-login-vector-isolated-png-image_5247852.jpg",
+                  : 'https://png.pngtree.com/png-clipart/20200224/original/pngtree-avatar-icon-profile-icon-member-login-vector-isolated-png-image_5247852.jpg',
               }}
               width={70}
               height={70}
@@ -190,7 +180,7 @@ const HomeScreen = () => {
             />
           </TouchableOpacity>
 
-          <View style={{ alignItems: "center" }}>
+          <View style={{alignItems: 'center'}}>
             <TouchableOpacity onPress={onSubmit} style={styles.btn}>
               <Text style={styles.text}>Continue</Text>
             </TouchableOpacity>
@@ -207,11 +197,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 25,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   avatar: {
     borderRadius: 50,
-    borderColor: "white",
+    borderColor: 'white',
     borderWidth: 1,
   },
   image: {
@@ -220,19 +210,19 @@ const styles = StyleSheet.create({
   btn: {
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "white",
+    borderColor: 'white',
     //   position: "absolute",
     //   bottom: 20,
     width: 300,
     height: 50,
-    backgroundColor: "#4f3d6b",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#4f3d6b',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginVertical: 20,
   },
   text: {
-    color: "white",
-    fontWeight: "700",
+    color: 'white',
+    fontWeight: '700',
     marginVertical: 8,
     fontSize: 15,
   },
@@ -240,16 +230,16 @@ const styles = StyleSheet.create({
     // alignItems: "center",
   },
   inputContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     borderWidth: 1,
-    borderColor: "gray",
+    borderColor: 'gray',
     height: 50,
-    alignItems: "center",
+    alignItems: 'center',
     paddingHorizontal: 12,
     // width: "80%",
     marginVertical: 5,
     borderRadius: 5,
-    backgroundColor: "#f0f3fa",
+    backgroundColor: '#f0f3fa',
     // alignSelf: "center",
   },
 });

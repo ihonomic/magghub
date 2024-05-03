@@ -1,29 +1,26 @@
-import "react-native-gesture-handler";
-
-import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
-
-import { createStackNavigator } from "@react-navigation/stack";
-import HomeScreen from "./screens/HomeScreen";
-import DetailScreen from "./screens/DetailScreen";
-import WelcomeScreen from "./screens/WelcomeScreen";
+import React from 'react';
+import {StatusBar} from 'react-native';
+import 'react-native-gesture-handler';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import HomeScreen from './screens/HomeScreen';
+import DetailScreen from './screens/DetailScreen';
+import WelcomeScreen from './screens/WelcomeScreen';
 
 const Stack = createStackNavigator();
 
-export default function App() {
+function App(): React.JSX.Element {
   return (
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          headerBackTitle: "Back",
+          headerBackTitle: 'Back',
           headerStyle: {
-            backgroundColor: "black",
+            backgroundColor: 'black',
           },
-          headerTintColor: "white",
-        }}
-      >
+          headerTintColor: 'white',
+        }}>
         <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen
@@ -31,12 +28,14 @@ export default function App() {
           component={DetailScreen}
           options={{
             headerShown: true,
-            title: "Profile",
+            title: 'Profile',
           }}
         />
       </Stack.Navigator>
 
-      <StatusBar style="light" />
+      {/* <StatusBar style="light" /> */}
     </NavigationContainer>
   );
 }
+
+export default App;
